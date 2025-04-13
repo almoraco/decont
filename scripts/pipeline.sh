@@ -1,15 +1,36 @@
-#Download all the files specified in data/filenames
-for url in $(<list_of_urls>) #TODO
-do
-    bash scripts/download.sh $url data
-done
+#!/bin/bash
+# Script para el curso de bioinformática
+# que "descontamina" los datos de un experimentos de small-RNA secuqncing
+
+#Descarga de los archivos escritos en data/urls
+# comprobando que no existen ya
+#y usando wget para descargarlos
+
+while read url; do
+    # Comprobar si el archivo ya existe
+    filename=$(basename "$url")
+    if [ -f "data/$filename" ]; then
+        echo "El archivo $filename ya existe. Saltando descarga."
+    else
+    # Descargar el archivo
+        echo "Descargando $url..."
+        wget "$url" -P data --show-progress
+    fi
+done < data/urls
+
 
 # Download the contaminants fasta file, uncompress it, and
 # filter to remove all small nuclear RNAs
-bash scripts/download.sh <contaminants_url> res yes #TODO
+
+URL="https://bioinformatics.cnio.es/data/courses/decont/contaminants.fasta.gz"
+UNCOMPRESS_OPTION="yes"
+EXCLUDE_WORD="small nuclear RNA" # para excluir small nuclear RNAs
+       
+bash scripts/download.sh "$URL" res "$UNCOMPRESS_OPTION" "$EXCLUDE_WORD"
+
 
 # Index the contaminants file
-bash scripts/index.sh res/contaminants.fasta res/contaminants_idx
+bash scripts/index.sh res/contaminants.fasta res
 
 # Merge the samples into a single file
 for sid in $(<list_of_sample_ids>) #TODO
