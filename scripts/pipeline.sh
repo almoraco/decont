@@ -52,28 +52,50 @@ log_message "Indexado completado exitosamente"
 
 
 # Merge the samples into a single file
-for sid in $(<list_of_sample_ids>) #TODO
+# Crear directorios necesarios
+mkdir -p out/merged
+
+# Extraer los IDs de muestra únicos de los archivos en data/
+log_message "Extrayendo muestra únicas de los archivos en data/"
+SAMPLE_IDS=$(ls data/*.fastq.gz 2>/dev/null | sed 's|data/||' | cut -d'-' -f1 | sort | uniq)
+
+# Si no se encontraron archivos .fastq.gz, buscar .fastq
+if [ -z "$SAMPLE_IDS" ]; then
+    SAMPLE_IDS=$(ls data/*.fastq 2>/dev/null | sed 's|data/||' | cut -d'-' -f1 | sort | uniq)
+fi
+
+# Mostrar los IDs de muestra encontrados
+log_message "IDs de muestra encontrados: $SAMPLE_IDS"
+
+# Procesar cada ID de muestra
+for sid in $SAMPLE_IDS
 do
+    log_message "Procesando muestra: $sid"
     bash scripts/merge_fastqs.sh data out/merged $sid
+    
+    # Ejecutar cutadapt (asumiendo que el script existe y funciona correctamente)
+    log_message "Ejecutando cutadapt para la muestra $sid"
+    CUTADAPT_LOG="logs/cutadapt_${sid}.log"
+    # Ajusta la línea siguiente según cómo llames realmente a cutadapt
+    cutadapt -a ADAPTER -o out/trimmed/${sid}_trimmed.fastq out/merged/${sid}_merged.fastq > "$CUTADAPT_LOG" 2>&1
+    
+    # Extraer información relevante de cutadapt y agregarla al archivo de log principal
+    READS_WITH_ADAPTERS=$(grep "Reads with adapters" "$CUTADAPT_LOG" | awk '{print $4,$5,$6,$7}')
+    TOTAL_BP=$(grep "Total basepairs processed" "$CUTADAPT_LOG" | awk '{print $4,$5}')
+    log_message "Cutadapt - $sid - Reads with adapters: $READS_WITH_ADAPTERS"
+    log_message "Cutadapt - $sid - Total basepairs: $TOTAL_BP"
+    
+    # Ejecutar STAR (asumiendo que el script existe y funciona correctamente)
+    log_message "Ejecutando STAR para la muestra $sid"
+    STAR_LOG="logs/star_${sid}.log"
+    # Ajusta la línea siguiente según cómo llames realmente a STAR
+    STAR --genomeDir reference_genome --readFilesIn out/trimmed/${sid}_trimmed.fastq --outFileNamePrefix out/aligned/${sid}_ > "$STAR_LOG" 2>&1
+    
+    # Extraer información relevante de STAR y agregarla al archivo de log principal
+    UNIQUELY_MAPPED=$(grep "Uniquely mapped reads %" out/aligned/${sid}_Log.final.out | awk '{print $NF}')
+    MULTI_MAPPED=$(grep "% of reads mapped to multiple loci" out/aligned/${sid}_Log.final.out | awk '{print $NF}')
+    TOO_MANY_LOCI=$(grep "% of reads mapped to too many loci" out/aligned/${sid}_Log.final.out | awk '{print $NF}')
+    log_message "STAR - $sid - Uniquely mapped reads: $UNIQUELY_MAPPED"
+    log_message "STAR - $sid - Reads mapped to multiple loci: $MULTI_MAPPED"
+    log_message "STAR - $sid - Reads mapped to too many loci: $TOO_MANY_LOCI"
 done
-
-# TODO: run cutadapt for all merged files
-cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
-     -o <trimmed_file> <input_file> > <log_file>
-
-# TODO: run STAR for all trimmed files
-for fname in out/trimmed/*.fastq.gz
-do
-    # you will need to obtain the sample ID from the filename
-    sid=#TODO
-    mkdir -p out/star/$sid
-    STAR --runThreadN 6 --genomeDir res/contaminants_idx \
-        --outReadsUnmapped Fastx --readFilesIn <input_file> \
-        --readFilesCommand gunzip -c --outFileNamePrefix <output_directory>
-done 
-
-# TODO: create a log file containing information from cutadapt and star logs
-# (this should be a single log file, and information should be *appended* to it on each run)
-# - cutadapt: Reads with adapters and total basepairs
-# - star: Percentages of uniquely mapped reads, reads mapped to multiple loci, and to too many loci
-# tip: use grep to filter the lines you're interested in
