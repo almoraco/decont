@@ -2,7 +2,7 @@
 # Script para el curso de bioinformática
 # que "descontamina" los datos de un experimentos de small-RNA secuqncing
 
-#last updated: 13-04-2025 10:10
+#last updated: 13-04-2025 10:18
 
 #Descarga de los archivos escritos en data/urls
 # comprobando que no existen ya
@@ -32,7 +32,7 @@ bash scripts/download.sh "$URL" res "$UNCOMPRESS_OPTION" "$EXCLUDE_WORD"
 
 
 # Index the contaminants file
-bash scripts/index.sh res/contaminants.fasta res
+bash scripts/index.sh res/contaminants.fasta res/contaminants_idx
 
 # Merge the samples into a single file
 for sid in $(<list_of_sample_ids>) #TODO
