@@ -2,6 +2,8 @@
 # Script para el curso de bioinformática
 # que "descontamina" los datos de un experimentos de small-RNA secuqncing
 
+#last updated: 13-04-2025 10:10
+
 #Descarga de los archivos escritos en data/urls
 # comprobando que no existen ya
 #y usando wget para descargarlos
