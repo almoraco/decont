@@ -5,9 +5,10 @@
 #last updated: 13-04-2025 11:58
 
 
-# Definir archivo de log para laa pipeline
-# Se creará en el directorio principal
-LOG_FILE="pipeline_log.txt"
+# Definir archivo de log para la pipeline
+# Se creará en la carpeta logs
+mkdir -p logs
+LOG_FILE="logs/pipeline_log.txt"
 
 # Función para registrar mensajes en el archivo de log
 log_message() {
