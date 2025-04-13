@@ -1,0 +1,27 @@
+STAR version=2.7.11b
+STAR compilation time,server,dir=2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
+##### Command Line:
+/home/vant/miniforge3/envs/decont/bin/STAR-avx2 --genomeDir reference_genome --readFilesIn out/trimmed/SPRET_EiJ_trimmed.fastq --outFileNamePrefix out/aligned/SPRET_EiJ_
+##### Initial USER parameters from Command Line:
+outFileNamePrefix                 out/aligned/SPRET_EiJ_
+###### All USER parameters from Command Line:
+genomeDir                     reference_genome     ~RE-DEFINED
+readFilesIn                   out/trimmed/SPRET_EiJ_trimmed.fastq        ~RE-DEFINED
+outFileNamePrefix             out/aligned/SPRET_EiJ_     ~RE-DEFINED
+##### Finished reading parameters from all sources
+
+##### Final user re-defined parameters-----------------:
+genomeDir                         reference_genome
+readFilesIn                       out/trimmed/SPRET_EiJ_trimmed.fastq   
+outFileNamePrefix                 out/aligned/SPRET_EiJ_
+
+-------------------------------
+##### Final effective command line:
+/home/vant/miniforge3/envs/decont/bin/STAR-avx2   --genomeDir reference_genome   --readFilesIn out/trimmed/SPRET_EiJ_trimmed.fastq      --outFileNamePrefix out/aligned/SPRET_EiJ_
+----------------------------------------
+
+Number of fastq files for each mate = 1
+
+EXITING because of fatal input ERROR: could not open readFilesIn=out/trimmed/SPRET_EiJ_trimmed.fastq
+
+Apr 13 12:18:04 ...... FATAL ERROR, exiting
