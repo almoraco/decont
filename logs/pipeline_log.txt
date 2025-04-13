@@ -1,0 +1,20 @@
+2025-04-13 12:18:03 - ==== Iniciando pipeline de procesamiento ====
+2025-04-13 12:18:03 - Extrayendo IDs de muestra únicos de los archivos en data/
+2025-04-13 12:18:03 - IDs de muestra encontrados: C57BL_6NJ
+SPRET_EiJ
+2025-04-13 12:18:03 - Procesando muestra: C57BL_6NJ
+2025-04-13 12:18:03 - Ejecutando cutadapt para la muestra C57BL_6NJ
+2025-04-13 12:18:03 - Cutadapt - C57BL_6NJ - Reads with adapters: 
+2025-04-13 12:18:03 - Cutadapt - C57BL_6NJ - Total basepairs: 
+2025-04-13 12:18:03 - Ejecutando STAR para la muestra C57BL_6NJ
+2025-04-13 12:18:03 - STAR - C57BL_6NJ - Uniquely mapped reads: 
+2025-04-13 12:18:03 - STAR - C57BL_6NJ - Reads mapped to multiple loci: 
+2025-04-13 12:18:03 - STAR - C57BL_6NJ - Reads mapped to too many loci: 
+2025-04-13 12:18:03 - Procesando muestra: SPRET_EiJ
+2025-04-13 12:18:03 - Ejecutando cutadapt para la muestra SPRET_EiJ
+2025-04-13 12:18:03 - Cutadapt - SPRET_EiJ - Reads with adapters: 
+2025-04-13 12:18:04 - Cutadapt - SPRET_EiJ - Total basepairs: 
+2025-04-13 12:18:04 - Ejecutando STAR para la muestra SPRET_EiJ
+2025-04-13 12:18:04 - STAR - SPRET_EiJ - Uniquely mapped reads: 
+2025-04-13 12:18:04 - STAR - SPRET_EiJ - Reads mapped to multiple loci: 
+2025-04-13 12:18:04 - STAR - SPRET_EiJ - Reads mapped to too many loci: 
